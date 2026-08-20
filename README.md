@@ -22,22 +22,28 @@ sous-domaine. Rien d'autre à toucher.
 
 ## DNS
 
-Zone hébergée chez Gandi. Le nom `tools.sagetlethias.tech` porte déjà des
-enregistrements enfants (`caldav2ics.`, `fgp.`), il faut donc l'adresser en
-**A / AAAA et non en CNAME** : la RFC 1034 interdit toute autre donnée sur un
-nom qui porte un CNAME, et plusieurs résolveurs gèrent mal les enfants d'un
-alias.
+Zone hébergée chez Gandi.
 
-| Nom     | Type | Valeurs                                                                                  |
-| ------- | ---- | ---------------------------------------------------------------------------------------- |
-| `tools` | A    | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`                |
-| `tools` | AAAA | `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153` |
+| Nom     | Type  | Valeur                    |
+| ------- | ----- | ------------------------- |
+| `tools` | CNAME | `lsagetlethias.github.io` |
 
-Les outils gardent chacun leur CNAME vers `alias.deno.net`, ils ne sont pas
-affectés.
+Les outils gardent chacun leur propre CNAME vers `alias.deno.net`
+(`caldav2ics.tools`, `fgp.tools`) et continuent de résoudre normalement, bien
+qu'ils soient enfants d'un nom qui porte un CNAME. La RFC 1034 interdit
+d'autres données *sur le nom lui-même*, pas sur ses enfants, et Gandi les sert
+correctement (vérifié sur Cloudflare, Google et Quad9).
 
-Une fois la propagation faite, GitHub provisionne le certificat tout seul, puis
-il reste à cocher « Enforce HTTPS » dans les réglages Pages.
+Si un jour un résolveur exotique bute là-dessus, le repli est de remplacer le
+CNAME par des A/AAAA vers GitHub Pages, ce qui supprime la question :
+
+```
+A     185.199.108.153  185.199.109.153  185.199.110.153  185.199.111.153
+AAAA  2606:50c0:8000::153  2606:50c0:8001::153  2606:50c0:8002::153  2606:50c0:8003::153
+```
+
+Le certificat est provisionné automatiquement par GitHub, « Enforce HTTPS » est
+activé.
 
 ## Outils recensés
 
