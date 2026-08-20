@@ -2,10 +2,6 @@
 
 Page de recensement des outils auto-hébergés sur `*.tools.sagetlethias.tech`.
 
-Site statique d'un seul fichier, servi par GitHub Pages depuis la branche
-`main`. Pas de build, pas de dépendances, pas de framework : on édite
-`index.html` et on pousse.
-
 ## Ajouter un outil
 
 Dupliquer un bloc `<li><article class="tool">…</article></li>` dans
