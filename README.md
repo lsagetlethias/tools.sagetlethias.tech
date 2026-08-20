@@ -22,17 +22,22 @@ sous-domaine. Rien d'autre à toucher.
 
 ## DNS
 
-Le domaine apex de ce sous-domaine pointe sur GitHub Pages, les outils
-pointent chacun sur leur hébergeur :
+Zone hébergée chez Gandi. Le nom `tools.sagetlethias.tech` porte déjà des
+enregistrements enfants (`caldav2ics.`, `fgp.`), il faut donc l'adresser en
+**A / AAAA et non en CNAME** : la RFC 1034 interdit toute autre donnée sur un
+nom qui porte un CNAME, et plusieurs résolveurs gèrent mal les enfants d'un
+alias.
 
-| Nom                                | Type  | Valeur                    |
-| ---------------------------------- | ----- | ------------------------- |
-| `tools.sagetlethias.tech`          | CNAME | `lsagetlethias.github.io` |
-| `caldav2ics.tools.sagetlethias.tech` | CNAME | (Deno Deploy)             |
-| `fgp.tools.sagetlethias.tech`      | CNAME | (Deno Deploy)             |
+| Nom     | Type | Valeurs                                                                                  |
+| ------- | ---- | ---------------------------------------------------------------------------------------- |
+| `tools` | A    | `185.199.108.153`, `185.199.109.153`, `185.199.110.153`, `185.199.111.153`                |
+| `tools` | AAAA | `2606:50c0:8000::153`, `2606:50c0:8001::153`, `2606:50c0:8002::153`, `2606:50c0:8003::153` |
 
-Un enregistrement joker `*.tools.sagetlethias.tech` ne couvre pas
-`tools.sagetlethias.tech` lui-même : les deux cohabitent sans conflit.
+Les outils gardent chacun leur CNAME vers `alias.deno.net`, ils ne sont pas
+affectés.
+
+Une fois la propagation faite, GitHub provisionne le certificat tout seul, puis
+il reste à cocher « Enforce HTTPS » dans les réglages Pages.
 
 ## Outils recensés
 
